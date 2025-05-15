@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Form</title>
+  <link href="/pages/css/stylCom.css" type="text/css" rel="stylesheet">
+  <link href="css/styles.css" type="text/css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" />
+</head>
+<body>
+  {{> partials/navi}}
+  <section class="py-5">
+    <div class="container px-4 px-lg-5 my-5">
+      <div class="row gx-4 gx-lg-5 align-items-center">
+        <div class="col-md-6">
+          <img class="card-img-top mb-5 mb-md-0" src="https://dummyimage.com/600x700/dee2e6/6c757d.jpg" alt="..." />
+        </div>
+
+        <!-- Sidebar -->
+        <div class="col-lg-4">
+          <!-- Search widget -->
+          <div class="card mb-4">
+            <div class="card-header">Search</div>
+            <div class="card-body">
+              <div class="input-group">
+                <input class="form-control" type="text" placeholder="Enter search term..." aria-label="Search" />
+                <button class="btn btn-primary" id="button-search" type="button">Go!</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Categories widget -->
+          <div class="card mb-4">
+            <div class="card-header">Categories</div>
+            <div class="card-body">
+              <div class="row">
+                <div class="col-sm-6">
+                  <ul class="list-unstyled mb-0">
+                    {{#each categories}}
+                      <li><a href="#category-{{_id}}">{{this.KTyp}}</a></li>
+                    {{/each}}
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Side widget -->
+          <div class="card mb-4">
+            <div class="card-header">Side Widget</div>
+            <div class="card-body">
+              You can put anything you want inside these side widgets.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Related items section -->
+  <section class="py-5 bg-light">
+    <div class="container px-4 px-lg-5 mt-5">
+      {{#each categories}}
+        <h2 class="fw-bolder mb-4" id="category-{{_id}}">{{this.KTyp}}</h2>
+        <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+          {{#each this.recipes}}
+            <div class="col mb-5">
+              <div class="card h-100">
+                <!-- Product image -->
+                <img class="card-img-top" src="{{this.imageUrl}}" alt="Image de {{name}}" />
+                <!-- Product details -->
+                <div class="card-body p-4">
+                  <div class="text-center">
+                    <!-- Recipe name -->
+                    <h5 class="fw-bolder">{{this.Title}}</h5>
+                    <!-- Product reviews-->
+                    <div class="d-flex justify-content-center small text-warning mb-2">
+                      <div class="bi-star-fill"></div>
+                      <div class="bi-star-fill"></div>
+                    </div>
+                    <!-- Recipe author -->
+                    <span class="text-muted">by {{this.autorname}}</span>
+                  </div>
+                </div>
+                <!-- Product actions -->
+                <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                  <div class="text-center"><a class="btn btn-primary" href="/recipe/{{_id}}">Read more →</a></div>
+                </div>
+              </div>
+            </div>
+          {{/each}}
+        </div>
+      {{/each}}
+    </div>
+  </section>
+  {{> partials/footer}}  <!-- Inclusion du footer -->
+
+</body>
+</html>
+
+
+

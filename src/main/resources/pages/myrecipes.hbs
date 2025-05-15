@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="de" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MJ-SHOP</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+    }
+    h2 {
+      font-family: 'Montserrat', sans-serif;
+    }
+    .btn-primary {
+      background-color: #4F46E5;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 8px;
+    }
+    .btn-primary:hover {
+      background-color: #4338CA;
+    }
+    .dark {
+      background-color: #1a202c;
+      color: white;
+    }
+    .dark .bg-white {
+      background-color: #2d3748;
+    }
+    .dark .text-gray-600 {
+      color: #cbd5e0;
+    }
+  </style>
+  <script>
+    function deleteRezept(id) {
+      //if (!confirm("Möchten SIe wirklich dieses Rezept löschen ?")) return;
+
+      fetch('/users/{{this.connectedUser}}/rezepte/' + id, {
+        method: 'DELETE'
+      }).then(response => {
+        if (response.ok) {
+          window.location.reload();  // Recharge la page après la suppression
+        } else {
+          console.error("Erreur lors de la suppression !");
+        }
+      });
+    }
+
+
+    function addZutat(index=0) {
+      const container = index !==0 ? document.getElementById("zutatenContainer3") : document.getElementById("zutatenContainer");
+      const newZutat = document.createElement("div");
+      newZutat.classList.add("zutaten-item", "flex", "space-x-2", "mb-3"); <!-- le div crée herite de ses classes -->
+      newZutat.innerHTML = `
+            <input type="number"  class="w-1/4 border p-2 rounded" name="zMenge" required>
+            <input type="text" placeholder="Messeinheit" class="w-1/4 border p-2 rounded" name="Zmesseinheit" required>
+            <input type="text" placeholder="Zutatname" class="w-1/2 border p-2 rounded" name="zName" required>
+        `;
+      container.appendChild(newZutat);
+    }
+
+  </script>
+</head>
+<body class="bg-gray-100">
+<nav class="bg-blue-600 p-4 shadow-md fixed top-0 left-0 w-full z-50">
+  <div class="container mx-auto flex justify-between items-center">
+    <div class="grid grid-cols-3 md:grid-cols-6 gap-2">
+      <a class="bg-white text-blue-600 px-4 py-2 rounded-lg shadow text-center" href="/"><i class="fas fa-home"></i> Startseite</a>
+      <a href="/users/{{this.connectedUser}}/rezepte" class="bg-white text-blue-600 px-4 py-2 rounded-lg shadow text-center"><i class="fas fa-list"></i> Meine Rezepte</a>
+      <a href="/users/{{this.connectedUser}}/profil" class="bg-white text-blue-600 px-4 py-2 rounded-lg shadow text-center"><i class="fas fa-user"></i> Konto</a>
+      <a href="/users/{{this.connectedUser}}/favorite" class="bg-white text-blue-600 px-4 py-2 rounded-lg shadow text-center"><i class="fas fa-heart"></i> Favoris</a>
+      <a href="" class="bg-white text-blue-600 px-4 py-2 rounded-lg shadow text-center"><i class="fas fa-shopping-cart"></i> Einkaufsliste</a>
+    </div>
+  </div>
+</nav>
+<section>
+  <div class="container mx-auto mt-20 text-center"><br><br><br>
+    <div class="bg-white p-6 rounded-xl shadow-md">
+      <h2 class="text-2xl font-semibold">Hier finden Sie Ihre erstellten Rezepte</h2>
+    </div>
+  </div>
+</section>
+
+<div class="container mx-auto py-10 px-5">
+  <div class="bg-white p-6 rounded-xl shadow-md">
+    <div id="daschboard">
+      <h2 class="text-xl font-semibold mb-3">Meine Rezepte</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        {{#each this.meineRezepte}}
+          <div class="p-4 bg-white rounded shadow">
+            <img src='{{this.urlBild}}' alt='{{this.Title}}' class='w-full h-40 object-cover rounded-lg mb-3'>
+            <a href="/rezepte/{{this.Rid}}"><h2 class='text-lg font-bold'>{{this.Title}}</h2></a>
+            <p class='text-sm text-gray-600'>Kategorie: {{this.KTyp}}</p>
+            <p class='text-sm text-gray-600'>Note: </p>
+            <button class="bg-blue-500 text-white px-3 py-2 rounded mt-2" onclick="toggleEditRezepte(1,{{this.Rid}})">Bearbeiten</button>
+            <button class="bg-red-500 text-white px-3 py-2 rounded mt-2" onclick="deleteRezept({{this.Rid}})">Löschen</button>
+          </div>
+
+        {{/each}}
+      </div>
+      <button class="btn-primary w-full mb-3" onclick="toggleEditRezepte(0,0)">Neues Rezept erstellen</button>
+    </div>
+
+
+
+    <div id="daschboard2" class="hidden">
+      <form action="/users/{{this.connectedUser}}/rezepte" method="POST" enctype="multipart/form-data">
+        <div class="mb-3">
+          <label for="Rezeptbild" class="form-label"><b>Rezeptbild hochladen</b></label><br>
+          <input type="file" class="form-control" id="Rezeptbild" name="bild" accept="image/*">
+        </div>
+        <div>
+          <label><b> Rezeptstitel: </b></label><br>
+          <input class="w-full border p-2 rounded mb-3" type="text" name="title" required>
+        </div>
+        <div>
+          <label for="category" >Kategorie:</label>
+          <select id="category" name="category" class="w-full p-2 mb-2 border rounded">
+            <option value="1">Hauptgerichte</option>
+            <option value="2">Getränke</option>
+            <option value="3">Asiatisch</option>
+            <option value="4">Mexikanisch</option>
+            <option value="5">Desserts</option>
+            <option value="6">Pizzas</option>
+            <option value="7">Pancakes</option>
+            <option value="8">Low Carb</option>
+            <option value="9">Vegan</option>
+            <option value="10">Vegetarisch</option>
+            <option value="11">Snacks</option>
+            <option value="12">Vorspeisen</option>
+          </select>
+        </div>
+
+        <h3 class="text-lg font-semibold mb-3">Zutaten</h3>
+        <div id="zutatenContainer">
+          <div class="zutaten-item flex space-x-2 mb-3">
+            <input type="number"  class="w-1/4 border p-2 rounded" name="zMenge" required>
+            <input type="text" placeholder="Messeinheit" class="w-1/4 border p-2 rounded" name="zMesseinheit" required>
+            <input type="text" placeholder="Zutatname" class="w-1/2 border p-2 rounded" name="zName" required>
+          </div>
+        </div>
+        <button type="button" onclick="addZutat()" class="bg-green-500 text-white px-3 py-2 rounded mb-3">+ </button>
+        <div>
+          <label for="desc"><b> Rezeptsbeschreibung: </b></label><br>
+          <textarea name="desc" id="desc" class="w-full border p-2 rounded mb-3" required> </textarea>
+        </div>
+        <button type="submit" class="btn-primary bg-green-500 w-full" >Speichern</button>
+        <button type="button" onclick="toggleEditRezepte(-1,0)" class="bg-red-600 text-white px-4 py-2 rounded w-full mt-2">Abbrechen</button>
+      </form>
+
+    </div>
+
+
+    <div id="daschboard3" class="hidden">
+      <form id="formUpdate" method="post" enctype="multipart/form-data">
+        <div class="mb-3">
+          <label for="Rezeptbild" class="form-label"><b>Rezeptbild ändern</b></label><br>
+          <input type="file" class="form-control" id="Rezeptbild" name="bild" accept="image/*">
+        </div>
+        <div>
+          <label><b> Rezeptstitel: </b></label><br>
+          <input class="w-full border p-2 rounded mb-3" type="text" name="title" required>
+        </div>
+        <div>
+          <label for="category3" >Kategorie:</label>
+          <select id="category3" name="category" class="w-full p-2 mb-2 border rounded">
+            <option value="1">Hauptgerichte</option>
+            <option value="2">Getränke</option>
+            <option value="3">Asiatisch</option>
+            <option value="4">Mexikanisch</option>
+            <option value="5">Desserts</option>
+            <option value="6">Pizzas</option>
+            <option value="7">Pancakes</option>
+            <option value="8">Low Carb</option>
+            <option value="9">Vegan</option>
+            <option value="10">Vegetarisch</option>
+            <option value="11">Snacks</option>
+            <option value="12">Vorspeisen</option>
+          </select>
+        </div>
+
+        <h3 class="text-lg font-semibold mb-3">Zutaten</h3>
+        <div id="zutatenContainer3">
+          <div class="zutaten-item flex space-x-2 mb-3">
+            <input type="number"  class="w-1/4 border p-2 rounded" name="zMenge" required>
+            <input type="text" placeholder="Messeinheit" class="w-1/4 border p-2 rounded" name="zMesseinheit" required>
+            <input type="text" placeholder="Zutatname" class="w-1/2 border p-2 rounded" name="zName" required>
+          </div>
+        </div>
+        <button type="button" onclick="addZutat(1)" class="bg-green-500 text-white px-3 py-2 rounded mb-3">+ </button>
+        <div>
+          <label for="desc"><b> Rezeptsbeschreibung: </b></label><br>
+          <textarea name="desc" id="desc" class="w-full border p-2 rounded mb-3" required> </textarea>
+        </div>
+        <button type="submit" class="btn-primary bg-green-500 w-full" >Speichern</button>
+        <button type="button" onclick="toggleEditRezepte(-1,0)" class="bg-red-600 text-white px-4 py-2 rounded w-full mt-2">Abbrechen</button>
+      </form>
+
+    </div>
+
+
+    <div id="rezepteGrid" class="grid grid-cols-1 md:grid-cols-3 gap-4"></div>
+  </div>
+</div>
+<footer class="bg-gray-800 text-white text-center p-6 mt-10">
+  <div class="container mx-auto flex flex-col md:flex-row justify-between items-center">
+    <p class="mb-3 md:mb-0">© 2025 Mansvell Nkwanga & Joel ngounouo Informatik Projekt WS24/25</p>
+    <a href="/logout"> <button class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded">Abmelden</button></a>
+  </div>
+</footer>
+<script>
+  function toggleDarkMode() {
+    document.documentElement.classList.toggle('dark');
+
+    // Sauvegarde la préférence dans localStorage
+    if (document.documentElement.classList.contains('dark')) {
+      localStorage.setItem('theme', 'dark');
+    } else {
+      localStorage.setItem('theme', 'light');
+    }
+
+
+    // Appliquer le mode sombre si l'utilisateur l'a déjà activé
+    if (localStorage.getItem('theme') === 'dark') {
+      document.documentElement.classList.add('dark');
+    }
+  }
+
+  async function toggleEditRezepte(index=0,Rid=0) {
+    document.getElementById("daschboard").classList.add("hidden");
+    document.getElementById("daschboard2").classList.add("hidden");
+    document.getElementById("daschboard3").classList.add("hidden");
+    if(index < 0){
+      document.getElementById("daschboard").classList.remove("hidden");
+    }else if(index === 0){
+      document.getElementById("daschboard2").classList.remove("hidden");
+      document.querySelector("input[name='title']").value = "";
+      document.querySelector("textarea").value = "";
+      document.querySelectorAll("input[name='category']").forEach(input => input.checked = false);
+      document.querySelector("input[name='bild']").value = "";
+    }else{
+      document.getElementById("daschboard3").classList.remove("hidden");
+
+      try{
+        const response = await fetch('/users/{{this.connectedUser}}/rezepte/'+ Rid + '/request');
+
+        if (!response.ok) {
+          throw new Error('Erreur réseau: ' + response.statusText);
+        }
+
+        const recipeToUpdate = await response.json();
+        //const cat = await recipeToUpdate.category.json();
+        console.log(recipeToUpdate);
+        document.querySelector("#daschboard3 input[name='title']").value = recipeToUpdate.title;
+        document.querySelector("#daschboard3 textarea").value = recipeToUpdate.beschreibung;
+
+        const categorySelect = document.getElementById("category3");
+        categorySelect.value = recipeToUpdate.category;
+
+        const zutatenContainer = document.getElementById("zutatenContainer3");
+        zutatenContainer.innerHTML = ""; // Supprime tous les anciens ingrédients avant d'en ajouter de nouveaux
+
+        const formulaire = document.getElementById("formUpdate");
+        formulaire.action = "/users/{{this.connectedUser}}/rezepte/"+Rid ;
+
+        recipeToUpdate.zutaten.forEach(zutat => {
+          //const menge = zutat["Menge"] || "";
+          //const messeinheit = zutat["Messeinheit"] || "";
+          //const zname = zutat["Zname"] || "";
+
+          const newZutat = document.createElement("div");
+          newZutat.classList.add("zutaten-item", "flex", "space-x-2", "mb-3");
+          newZutat.innerHTML = `
+          <input type="number" class="w-1/4 border p-2 rounded" name="zMenge" value="${zutat.Menge}" required>
+          <input type="text" class="w-1/4 border p-2 rounded" name="zMesseinheit" value="${zutat.Messeinheit}" required>
+          <input type="text" class="w-1/2 border p-2 rounded" name="zName" value="${zutat.Zname}" required>
+        `;
+          zutatenContainer.appendChild(newZutat);
+        });
+
+
+
+      }catch (error) {
+        console.error('Erreur try. Erreur lors de la récupération des données :', error);
+      }
+
+    }
+  }
+</script>
+</body>
+</html>
+
+
+
+
+
+

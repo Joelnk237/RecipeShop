@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MJ-SHOP</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
+  <script src="/pages/js/DarkLightMode.js" defer></script>
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+    }
+    h2 {
+      font-family: 'Montserrat', sans-serif;
+    }
+    .btn-primary {
+      background-color: #4F46E5;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 8px;
+    }
+    .btn-primary:hover {
+      background-color: #4338CA;
+    }
+    .dark-mode .bg-white {
+      background-color: #2d3748 !important;
+      color: white !important;}
+    .dark-mode  {background-color: lightslategray !important;}
+    .dark-mode .text-blue-600 {color: #cbd5e0 !important;}
+    .dark-mode .bg-gray-800 {background-color: #2d3748 !important;}
+    .dark-mode .btn-primary {background-color: #6b46c1;}
+    .dark-mode .btn-primary:hover {background-color: #553c9a;}
+  </style>
+</head>
+<body class="bg-gray-100">
+<nav class="bg-blue-600 p-4 shadow-md fixed top-0 left-0 w-full z-50">
+  <div class="container mx-auto flex justify-between items-center">
+    <!--a class="text-white text-lg font-bold" href="#">Startseite</a>-->
+    <div class="grid grid-cols-3 md:grid-cols-6 gap-2">
+      <a class="bg-white text-blue-600 px-4 py-2 rounded-lg shadow text-center" href="/"><i class="fas fa-home"></i> Startseite</a>
+      <a href="/users/{{this.connectedUser}}/rezepte" class="bg-white text-blue-600 px-4 py-2 rounded-lg shadow text-center"><i class="fas fa-list"></i> Meine Rezepte</a>
+      <a href="/users/{{this.connectedUser}}/profil" class="bg-white text-blue-600 px-4 py-2 rounded-lg shadow text-center"><i class="fas fa-user"></i> Konto</a>
+      <a href="/users/{{this.connectedUser}}/favorite" class="bg-white text-blue-600 px-4 py-2 rounded-lg shadow text-center"><i class="fas fa-heart"></i> Favoris</a>
+      <a href="" class="bg-white text-blue-600 px-4 py-2 rounded-lg shadow text-center"><i class="fas fa-shopping-cart"></i> Einkaufsliste</a>
+      <button id="darkModeToggle" class="bg-gray-800 text-white px-4 py-2 rounded-lg">🌙/☀️</button>
+    </div>
+  </div>
+</nav>
+<section> <br> <br>
+  <div class="container mx-auto mt-10 text-center"><br> <br> <br>
+    <div class="bg-white p-6 rounded-xl shadow-md">
+      <h2 class="text-2xl font-semibold "> {{this.catName}} ⭐!</h2>
+    </div>
+  </div>
+
+  <div class="container mx-auto p-6">
+    <div id="favoritenListe" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
+      {{#each this.rezepte}}
+        <div>
+          <a href="/rezepte/{{this.Rid}}">
+            <img src="{{this.fullUrl}}" alt="{{this.fullUrl}}" class="w-full h-40 object-cover rounded-lg mb-3">
+            <h2 class="text-lg font-bold">{{this.Title}}</h2>
+          </a>
+
+        </div>
+      {{/each}}
+    </div>
+    <!--<button onclick="FavLoeschung()" class="bg-red-500 text-white px-4 py-2 rounded mt-4">Alle Favoriten löschen</button> -->
+  </div>
+</section>
+<footer class="bg-gray-800 text-white text-center p-6 mt-10">
+  <div class="container mx-auto flex flex-col md:flex-row justify-between items-center">
+    <p class="mb-3 md:mb-0">© 2025 Mansvell Nkwanga & Joel Ngounouo - Informatik Projekt WS24/25</p>
+    <a href="/logout"> <button class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded">Abmelden</button></a>
+  </div>
+</footer>
+</body>
+</html>

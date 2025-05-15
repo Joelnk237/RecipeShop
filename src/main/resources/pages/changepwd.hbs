@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MJ-SHOP</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <script src="/pages/js/DarkLightMode.js" defer></script>
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+    }
+    h2 {
+      font-family: 'Montserrat', sans-serif;
+    }
+    .btn-primary {
+      background-color: #4F46E5;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 8px;
+    }
+    .btn-primary:hover {
+      background-color: #4338CA;
+    }
+    .dark-mode .bg-white {
+      background-color: #2d3748 !important;
+      color: white !important;}
+    .dark-mode  {background-color: lightslategray !important;}
+    .dark-mode .text-blue-600 {color: #cbd5e0 !important;}
+    .dark-mode .bg-gray-800 {background-color: #2d3748 !important;}
+    .dark-mode .btn-primary {background-color: #6b46c1;}
+    .dark-mode .btn-primary:hover {background-color: #553c9a;}
+  </style>
+  <script>
+    function saveNewPassword() {
+      const newPassword = document.getElementById("newPwd").value;
+      const confirmNewPassword = document.getElementById("neuPwdconfirm").value;
+
+      if (newPassword !== confirmNewPassword) {
+        alert("Die Passwörter stimmen nicht überein.");
+        window.location.reload();
+      }else{
+
+        const save = document.getElementById("save")
+        save.submit;
+        /*fetch('/users//pwd', {
+          method: 'POST'
+        }).then(response => {
+          if (response.ok) {
+            //window.location.reload();
+            window.location.href= '/';
+          }
+        });*/
+
+      }
+    }
+
+  </script>
+</head>
+<body>
+<nav class="bg-blue-600 p-4 shadow-md fixed top-0 left-0 w-full z-50">
+  <div class="container mx-auto flex justify-between items-center">
+    <div class="grid grid-cols-3 md:grid-cols-6 gap-2">
+      <a class="bg-white text-blue-600 px-4 py-2 rounded-lg shadow text-center" href="/"><i class="fas fa-home"></i> Startseite</a>
+      <a href="/users/{{this.connectedUser}}/rezepte" class="bg-white text-blue-600 px-4 py-2 rounded-lg shadow text-center"><i class="fas fa-list"></i> Meine Rezepte</a>
+      <a href="/users/{{this.connectedUser}}/profil" class="bg-white text-blue-600 px-4 py-2 rounded-lg shadow text-center"><i class="fas fa-user"></i> Konto</a>
+      <a href="/users/{{this.connectedUser}}/favorite" class="bg-white text-blue-600 px-4 py-2 rounded-lg shadow text-center"><i class="fas fa-heart"></i> Favoris</a>
+      <a href="" class="bg-white text-blue-600 px-4 py-2 rounded-lg shadow text-center"><i class="fas fa-shopping-cart"></i> Einkaufsliste</a>
+      <button id="darkModeToggle" class="bg-gray-800 text-white px-4 py-2 rounded-lg">🌙/☀️</button>
+    </div>
+  </div>
+</nav>
+<section>
+
+  <div class="container mx-auto py-10 px-5 ">
+    <div class="bg-white p-6 rounded-xl shadow-md border">
+      <div class="container mx-auto py-10 px-5">
+        <form id="passwordForm" action="/users/{{this.connectedUser}}/pwd" method="post" enctype="multipart/form-data">
+        <div class="bg-white p-6 rounded-xl shadow-md border">
+          <h2 class="text-xl font-semibold mb-3">Änderung Passwort</h2> <hr>
+          <label><b>Aktuelles Passwort:</b></label>
+          <input name="altPwd" type="password" id="currentPassword" class="w-full border p-2 rounded mb-3" placeholder="Geben Sie Ihr aktuelles Passwort ein" required>
+          <label><b>Neues Passwort:</b></label>
+          <input name="neuPwd" type="password" id="neuPwd" class="w-full border p-2 rounded mb-3" placeholder="Geben Sie Ihr neues Passwort ein" required>
+          <label for="neuPwdconfirm"><b>Bestätigen Sie das neue Passwort:</b></label>
+          <input name="neuPwdconfirm" type="password" id="neuPwdconfirm" class="w-full border p-2 rounded mb-3" placeholder="Geben sie das neu Passwort nochmal" required>
+
+          <button class="btn-primary w-full mt-4" type="submit">Speichern</button>
+
+        </div>
+        </form>
+        <a href="/users/{{this.connectedUser}}/profil"><button class="bg-red-600 text-white px-4 py-2 rounded w-full mt-2" >Abbrechen</button></a>
+      </div>
+
+
+    </div>
+  </div>
+
+</section>
+<script>
+  document.getElementById("passwordForm").addEventListener("submit", function (event) {
+    const newPassword = document.getElementById("neuPwd").value;
+    const confirmNewPassword = document.getElementById("neuPwdconfirm").value;
+
+    if (newPassword !== confirmNewPassword) {
+      event.preventDefault(); // Empêche la soumission du formulaire
+      alert("Die Passwörter stimmen nicht überein.");
+    }
+  });
+</script>
+</body>
+</html>

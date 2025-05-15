@@ -1,0 +1,23 @@
+### Home page
+GET http://localhost:8888
+
+### Zugangsdaten schicken
+POST http://localhost:8888/login
+Content-Type: application/x-www-form-urlencoded
+
+email=m@gmail&password=123
+
+
+### recup home
+GET http://localhost:8888/users/1124/profil
+
+
+### Benutzerdaten anfordern
+GET http://localhost:8888/users/1124
+
+
+### Alle Rezepte eines Benutzer abrufen
+GET http://localhost:8888/users/1124/rezepte
+
+### Alle Infos über ein Rezept anfordern
+GET http://localhost:8888/rezepte/568

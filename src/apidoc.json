@@ -1,0 +1,12 @@
+{
+  "name": "myAPI",
+  "version": "1.0.0",
+  "description": "API Doc für das Informatik Projekt",
+  "title": "API Documentation",
+  "url": "http://localhost:8888",
+  "sampleUrl": "http://localhost:8888",
+  "template": {
+    "withCompare": true,
+    "withGenerator": true
+  }
+}

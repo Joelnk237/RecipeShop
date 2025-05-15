@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MJ-SHOP</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
+    <script src="/pages/js/DarkLightMode.js" defer></script>
+    <style>
+      body {
+        font-family: 'Poppins', sans-serif;
+      }
+      h2 {
+        font-family: 'Montserrat', sans-serif;
+      }
+      .btn-primary {
+        background-color: #4F46E5;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 8px;
+      }
+      .btn-primary:hover {background-color: #4338CA;}
+      .dark-mode .bg-white {
+        background-color: #2d3748 !important;
+        color: darkgrey !important;}
+      .dark-mode  {background-color: lightslategray !important;}
+      .dark-mode .text-blue-600 {color: #cbd5e0 !important;}
+      .dark-mode .bg-gray-800 {background-color: #2d3748 !important;}
+      .dark-mode .btn-primary {background-color: royalblue;}
+      .dark-mode .btn-primary:hover {background-color: #553c9a;}
+    </style>
+    <script>
+
+        function toggleEditProfile() {
+            document.getElementById("profileVue").classList.toggle("hidden");
+            document.getElementById("profileModif").classList.toggle("hidden");
+        }
+
+        function deleteAccount(id) {
+          fetch('/users/'+id, {
+            method: 'DELETE'
+          }).then(response => {
+            if (response.ok) {
+              window.location.href = "/";  // Recharge la page
+            } else {
+              console.error("Erreur lors de la suppression !");
+            }
+          });
+        }
+        function saveChange() {
+          const form = document.getElementById("profileModif").querySelector("form");
+          const formData = new FormData(form);
+
+          fetch('/users/{{this.connectedUser}}/profil', {
+            method: 'PUT',
+            body: formData
+          }).then(response => {
+            if (response.ok) {
+              //alert("requete reussi") ;
+              window.location.href = '/users/{{this.connectedUser}}/profil';
+              //window.location.reload();
+            } else {
+              console.error("Erreur lors de la suppression !");
+            }
+          });
+        }
+
+    </script>
+</head>
+<body class="bg-gray-100">
+<nav class="bg-blue-600 p-4 shadow-md fixed top-0 left-0 w-full z-50">
+    <div class="container mx-auto flex justify-between items-center">
+        <div class="grid grid-cols-3 md:grid-cols-6 gap-2">
+            <a class="bg-white text-blue-600 px-4 py-2 rounded-lg shadow text-center" href="/"><i class="fas fa-home"></i> Startseite</a>
+            <a href="/users/{{this.connectedUser}}/rezepte" class="bg-white text-blue-600 px-4 py-2 rounded-lg shadow text-center"><i class="fas fa-list"></i> Meine Rezepte</a>
+            <a href="/users/{{this.connectedUser}}/profil" class="bg-white text-blue-600 px-4 py-2 rounded-lg shadow text-center"><i class="fas fa-user"></i> Konto</a>
+            <a href="/users/{{this.connectedUser}}/favorite" class="bg-white text-blue-600 px-4 py-2 rounded-lg shadow text-center"><i class="fas fa-heart"></i> Favoris</a>
+            <a href="" class="bg-white text-blue-600 px-4 py-2 rounded-lg shadow text-center"><i class="fas fa-shopping-cart"></i> Einkaufsliste</a>
+            <button id="darkModeToggle" class="bg-gray-800 text-white px-4 py-2 rounded-lg">🌙/☀️</button>
+        </div>
+    </div>
+</nav>
+<section>br> <br> <br> <br> <br> <br>
+       <div class="container mx-auto py-10 px-5 ">
+           <div class="bg-white p-6 rounded-xl shadow-md border">
+               <div id="profileVue">
+                   <h2 class="text-xl font-semibold mb-3">MEIN PROFIL</h2> <hr>
+                   <img src="{{this.profilBild}}" alt="Profilbild" class="w-32 h-32 rounded-full mx-auto mb-3">
+                   <p class="text-center font-semibold" id="usernameDisplay">Username : {{this.userInfo.Nname}}</p> <hr>
+                    <p class="text-center font-semibold" id="usernameDisplay">Email : {{this.userInfo.Email}}</p> <hr>
+                   <button onclick="toggleEditProfile()" class="btn-primary w-full mt-3">Profil bearbeiten</button> <hr>
+                   <button class="bg-red-600 text-white px-4 py-2 rounded w-full mt-2" onclick="deleteAccount({{this.connectedUser}})">Account löschen</button> <!-- Bearbeitung  -->
+               </div>
+               <div id="profileModif" class="hidden">
+                 <form id="form" enctype="multipart/form-data" >
+                   <h2 class="text-xl font-semibold mb-3">Profil bearbeiten</h2> <hr>
+                   <label><b>Profilbild bearbeiten: </b></label>
+                   <input type="file" name="bild" class="w-full border p-2 rounded mb-3" accept="image/*">
+                   <label for="Nname"><b>Benutzername bearbeiten: </b></label>
+                   <input name="Nname" id="Nname" value="{{this.userInfo.Nname}}" type="text" placeholder="Neuer Benutzername" class="w-full border p-2 rounded mb-3">
+                   <label ><b> E-Mail bearbeiten :</b></label>
+                   <input value="{{this.userInfo.Email}}" type="email" name="email" placeholder="abcdef@gmail.com" class="w-full border p-2 rounded mb-3" required>
+
+                 </form>
+                 <button class="btn-primary w-full" onclick="saveChange();">Speichern</button> <hr>
+                 <a href="/users/{{this.connectedUser}}/pwd"><button class="btn-primary w-full">Passwort ändern</button><hr></a>
+                 <button onclick="toggleEditProfile()" class="bg-red-600 text-white px-4 py-2 rounded w-full ">Abbrechen</button>
+               </div>
+
+           </div>
+       </div>
+</section>
+<footer class="bg-gray-800 text-white text-center p-6 mt-10">
+    <div class="container mx-auto flex flex-col md:flex-row justify-between items-center">
+        <p class="mb-3 md:mb-0">© 2025 Mansvell Nkwanga & Joel ngounouo - Informatik Projekt WS24/25</p>
+        <a href="/logout"> <button class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded">Abmelden</button></a>
+    </div>
+</footer>
+</body>
+</html>

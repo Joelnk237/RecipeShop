@@ -1,0 +1,1 @@
+typeSearchIndex = [{"l":"Alle Klassen und Schnittstellen","u":"allclasses-index.html"},{"p":"gruppe21.info_projekt","l":"MainVerticle.DatabaseConfig"},{"p":"gruppe21.info_projekt","l":"MainVerticle"},{"p":"gruppe21.info_projekt","l":"Rezept"},{"p":"gruppe21.info_projekt","l":"TestMainVerticle"},{"p":"gruppe21.info_projekt","l":"User"}];updateSearchResults();
