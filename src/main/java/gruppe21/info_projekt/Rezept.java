@@ -3,12 +3,12 @@ package gruppe21.info_projekt;
 import io.vertx.core.json.JsonObject;
 
 public class Rezept {
-  private int id;
-  private int id_autor;
-  private int kat_id;
-  private String title;
-  private String beschreibung;
-  private String urlBild;
+  private int id; // Rezept ID
+  private int id_autor; // AUtor ID
+  private int kat_id;  // Kategorie ID
+  private String title; // Title
+  private String beschreibung; // Kurz beschreibung
+  private String urlBild; // Rezept Bild
 
   public Rezept(int id, int id_autor, int kat_id, String title, String beschreibung, String urlBild) {
     this.id = id;

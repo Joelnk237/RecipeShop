@@ -18,11 +18,10 @@ import io.vertx.ext.web.handler.SessionHandler;
 import io.vertx.ext.web.handler.StaticHandler;
 import io.vertx.ext.web.sstore.LocalSessionStore;
 import io.vertx.ext.web.templ.handlebars.HandlebarsTemplateEngine;
-//import io.vertx.sqlclient.Pool;
+
 import io.vertx.sqlclient.*;
 import io.vertx.sqlclient.PoolOptions;
 import io.vertx.sqlclient.SqlConnectOptions;
-//import org.mariadb.jdbc.pool.Pool;
 
 
 import java.io.IOException;

@@ -3,11 +3,11 @@ package gruppe21.info_projekt;
 import io.vertx.core.json.JsonObject;
 
 public class User {
-  private int id;
-  private String name;
-  private String email;
-  private String urlBild;
-  private String password;
+  private int id; // ID des Benutzers
+  private String name; // Name des Benutzers
+  private String email; // E-Mail Adresse
+  private String urlBild; // path zum Bild
+  private String password; // Password
 
 
   public User(int id, String name, String email, String urlBild, String password) {

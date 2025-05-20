@@ -13,7 +13,7 @@ Dies ist eine moderne Web-Anwendung zur Verwaltung und zum Teilen von Kochrezept
 - Registrierung eines neuen Benutzers
 - Login und Authentifizierung
 - Löschen des Benutzerkontos
-- Profil bearbeiten
+- Bearbeiten des Benutzerkontos
 
 📄 Rezeptfunktionen:
 - Erstellung und Veröffentlichung eigener Rezepte
@@ -48,7 +48,7 @@ Dies ist eine moderne Web-Anwendung zur Verwaltung und zum Teilen von Kochrezept
 1. Projekt klonen:
    https://github.com/Joelnk237/RecipeShop.git
 2. Backend starten: ./gradlew run
-3. Frontend öffnen: localhost:8888 laden
+3. Frontend öffnen: localhost:8888 auf Browser laden
 
 
 📫 Kontakt / Mitwirken
